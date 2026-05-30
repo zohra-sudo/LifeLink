@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#15233f"/>
+      <stop offset="60%" stop-color="#0c1429"/>
+      <stop offset="100%" stop-color="#070b18"/>
+    </radialGradient>
+    <linearGradient id="holo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7af0ff"/>
+      <stop offset="45%" stop-color="#43d6c9"/>
+      <stop offset="100%" stop-color="#a66bff"/>
+    </linearGradient>
+    <radialGradient id="core" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#bdf6ff" stop-opacity="0.95"/>
+      <stop offset="50%" stop-color="#4fd8e8" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#7a55ff" stop-opacity="0.05"/>
+    </radialGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#bg)"/>
+
+  <!-- aura -->
+  <circle cx="300" cy="285" r="210" fill="url(#core)" opacity="0.65"/>
+
+  <!-- orbital rings -->
+  <g stroke="url(#holo)" fill="none" opacity="0.4">
+    <ellipse cx="300" cy="290" rx="225" ry="90" stroke-width="1.2"/>
+    <ellipse cx="300" cy="290" rx="180" ry="225" stroke-width="1"/>
+    <circle cx="300" cy="285" r="245" stroke-width="0.8" stroke-dasharray="2 8"/>
+  </g>
+
+  <!-- anatomical heart, translucent holographic -->
+  <g filter="url(#glow)" transform="translate(300 300)">
+    <path d="M0 150 C -95 70 -150 15 -150 -55 C -150 -110 -105 -145 -60 -145
+             C -28 -145 -8 -125 0 -100 C 8 -125 28 -145 60 -145
+             C 105 -145 150 -110 150 -55 C 150 15 95 70 0 150 Z"
+          fill="url(#holo)" fill-opacity="0.14"
+          stroke="url(#holo)" stroke-width="2.4"/>
+    <!-- aorta / vessels -->
+    <path d="M-12 -118 C -40 -175 -10 -205 18 -198 C 6 -170 28 -150 40 -132"
+          fill="none" stroke="#7af0ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+    <path d="M30 -120 C 55 -160 95 -150 92 -120 C 70 -118 58 -100 50 -86"
+          fill="none" stroke="#a66bff" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+    <!-- internal contour lines -->
+    <g stroke="#9ef3ff" stroke-width="1" fill="none" opacity="0.5">
+      <path d="M-95 -40 C -55 -10 -30 30 -20 95"/>
+      <path d="M90 -45 C 55 -5 35 35 25 100"/>
+      <path d="M-55 -95 C -35 -50 -30 0 -40 55"/>
+      <path d="M55 -95 C 35 -45 30 5 42 60"/>
+      <path d="M0 -90 L 0 120" stroke-dasharray="3 7"/>
+    </g>
+    <!-- glowing core -->
+    <circle cx="0" cy="-10" r="34" fill="#bdf6ff" opacity="0.22"/>
+    <circle cx="0" cy="-10" r="14" fill="#eafcff" opacity="0.5"/>
+  </g>
+
+  <!-- particles -->
+  <g fill="#7af0ff">
+    <circle cx="120" cy="160" r="2.4" opacity="0.8"/>
+    <circle cx="470" cy="210" r="2" opacity="0.7"/>
+    <circle cx="430" cy="430" r="2.6" opacity="0.6"/>
+    <circle cx="150" cy="430" r="1.8" opacity="0.7"/>
+    <circle cx="300" cy="95" r="2.2" opacity="0.8"/>
+    <circle cx="95" cy="300" r="1.6" opacity="0.6"/>
+    <circle cx="505" cy="320" r="1.8" opacity="0.6"/>
+  </g>
+</svg>

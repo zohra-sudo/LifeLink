@@ -1,0 +1,141 @@
+# LifeLink
+
+> A heartbeat beyond your own.
+
+A cinematic, full-stack platform for **post-mortem organ donation**. Three roles
+(visitor, donor, hospital) plus administration, real authentication, and a
+MongoDB-backed registry — wrapped in an award-level 2030 biotech UI.
+
+```
+lifelink/
+├─ frontend/   # React 19 + TS + Vite 7 + TanStack Router + Tailwind v4 + Framer Motion
+└─ backend/    # Express + MongoDB (Mongoose), MVC architecture
+```
+
+---
+
+## 1. Backend — Express + MongoDB (MVC)
+
+```
+backend/
+├─ src/
+│  ├─ config/        # db connection, domain constants/enums
+│  ├─ models/        # User, Organ, DonationRequest, Match, Notification, ActivityLog
+│  ├─ controllers/   # auth, donor, hospital, request, organ, admin, stats
+│  ├─ routes/        # one router per controller + validators
+│  ├─ middleware/    # auth (JWT + roles), validate, rateLimit, errorHandler
+│  ├─ utils/         # token (JWT), ApiError / asyncHandler
+│  ├─ app.js         # builds the Express app (testable, no listen)
+│  ├─ server.js      # entry point: connect DB + listen
+│  └─ seed.js        # seeds the admin account + demo data
+└─ tests/            # node:test + supertest + mongodb-memory-server
+```
+
+### Roles & access
+
+| Role       | Created by            | Access                                              |
+|------------|-----------------------|-----------------------------------------------------|
+| `admin`    | seed script           | Approve/reject hospitals, platform stats            |
+| `donor`    | self-registration     | Active immediately — profile, consent, card, history |
+| `hospital` | self-registration     | **Pending** until an admin approves it, then search registry |
+
+### Security
+
+- Passwords hashed with **bcrypt** (never returned by the API)
+- **JWT** auth (`Authorization: Bearer …`) with role-based guards
+- **helmet** security headers, **CORS** allow-list
+- **express-rate-limit** (tight on `/api/auth`)
+- **express-mongo-sanitize** (blocks NoSQL injection)
+- **express-validator** input validation
+- Every donor-dossier change is traced in an `ActivityLog`
+
+### Run
+
+```bash
+cd backend
+cp .env.example .env          # adjust MONGODB_URI / JWT_SECRET
+npm install
+npm run seed                  # creates ONLY the admin account (idempotent)
+npm run dev                   # http://localhost:4000
+npm test                      # 11 integration tests (in-memory MongoDB)
+```
+
+**Admin account (seeded):** `elghazranijihane@gmail.com` / `JhnZhr0504`
+
+### API surface
+
+| Method | Path                                   | Role            |
+|--------|----------------------------------------|-----------------|
+| POST   | `/api/auth/register`                   | public          |
+| POST   | `/api/auth/login`                      | public          |
+| GET    | `/api/auth/me`                         | authenticated   |
+| GET/PUT| `/api/donor/me`                        | donor           |
+| GET    | `/api/donor/card`                      | donor (QR code) |
+| GET    | `/api/donor/history`                   | donor           |
+| GET    | `/api/donor/notifications`             | donor           |
+| GET    | `/api/donor/matches`                   | donor           |
+| GET    | `/api/organs`                          | public catalog  |
+| GET    | `/api/hospital/donors?bloodType&organ&city` | hospital* / admin |
+| GET    | `/api/hospital/verify/:donorId`        | hospital* / admin |
+| GET    | `/api/hospital/stats`                  | hospital* / admin |
+| POST   | `/api/hospital/requests`               | hospital* / admin |
+| GET    | `/api/hospital/requests`               | hospital* / admin |
+| GET    | `/api/hospital/requests/:id/matches`   | hospital* / admin |
+| GET    | `/api/admin/hospitals?status`          | admin           |
+| PATCH  | `/api/admin/hospitals/:id/approve`     | admin           |
+| PATCH  | `/api/admin/hospitals/:id/reject`      | admin           |
+| GET    | `/api/admin/stats`                     | admin           |
+| GET    | `/api/stats`                           | public          |
+
+\* approved hospitals only.
+
+---
+
+## 2. Frontend — React 19 + Vite 7
+
+```
+frontend/src/
+├─ routes/        # index (visitor), register, login, dashboard (donor),
+│                 # hospital, admin, __root  (TanStack file-based routing)
+├─ components/    # BioBackground, HeroHeart, DonorCard, Navbar, RequireAuth
+│  └─ sections/   # Mission, Process, Impact, Stories, Partners, FAQ, CTA, Footer
+├─ lib/           # api (typed client), auth (context + guards), domain, utils
+├─ assets/        # holographic SVG art
+└─ styles.css     # Tailwind v4 @theme tokens + keyframes + utilities
+```
+
+- **Auth context** stores the JWT, restores the session on reload, and exposes
+  `login` / `register` / `logout`.
+- `<RequireAuth roles={[…]}>` guards each space and shows a dedicated waiting
+  screen for hospitals pending approval.
+- The donor card renders a **real QR code** (generated by the backend) encoding
+  the donor's verification URL.
+
+### Run
+
+```bash
+cd frontend
+npm install
+npm run dev                   # http://localhost:5173
+```
+
+`/api/*` is proxied to `http://localhost:4000` (see `vite.config.ts`), so run
+the backend alongside.
+
+---
+
+## 3. Quick start (both)
+
+```bash
+# terminal 1
+cd backend && npm install && npm run seed && npm run dev
+# terminal 2
+cd frontend && npm install && npm run dev
+```
+
+Open http://localhost:5173 — register as a donor, or sign in as the admin to
+approve hospital accounts.
+
+> The images in `frontend/src/assets/` are procedural SVG placeholders; swap
+> them for generated cinematic imagery and the components pick them up
+> automatically.

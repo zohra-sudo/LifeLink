@@ -1,0 +1,361 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   LifeLink — Design System
+   Always-dark cinematic biotech. Tokens defined as Tailwind v4 @theme inline.
+   ========================================================================= */
+
+@theme inline {
+  /* ----- Core palette (oklch) ----- */
+  --color-background: oklch(0.16 0.04 240); /* deep midnight blue */
+  --color-foreground: oklch(0.97 0.01 220);
+
+  --color-primary: oklch(0.78 0.16 200); /* cyan-glow */
+  --color-primary-foreground: oklch(0.16 0.04 240);
+
+  --color-cyan-glow: oklch(0.82 0.18 200);
+  --color-turquoise: oklch(0.78 0.15 180);
+  --color-bio-purple: oklch(0.62 0.22 295);
+  --color-organic-red: oklch(0.66 0.22 22);
+  --color-neon-pink: oklch(0.72 0.25 350);
+  --color-emerald-life: oklch(0.78 0.18 160);
+
+  /* ----- Surfaces ----- */
+  --color-card: oklch(0.2 0.045 245);
+  --color-card-foreground: oklch(0.97 0.01 220);
+  --color-muted: oklch(0.3 0.03 245);
+  --color-muted-foreground: oklch(0.72 0.03 230);
+  --color-border: oklch(0.82 0.18 200 / 0.18);
+  --color-ring: oklch(0.82 0.18 200 / 0.55);
+  --color-accent: oklch(0.62 0.22 295);
+
+  /* ----- Typography ----- */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* ----- Radii ----- */
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+
+  /* ----- Animations ----- */
+  --animate-heartbeat: heartbeat 1.4s ease-in-out infinite;
+  --animate-breathe: breathe 6s ease-in-out infinite;
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2.5s ease-in-out infinite;
+  --animate-scan: scan 3s linear infinite;
+  --animate-flow: flow 12s linear infinite;
+  --animate-rise: rise 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-spin-slow: spin-slow 18s linear infinite;
+}
+
+/* =========================================================================
+   Non-token CSS custom properties (gradients & shadows)
+   ========================================================================= */
+:root {
+  --gradient-hero: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      oklch(0.32 0.12 250 / 0.55),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 70% 70% at 90% 110%,
+      oklch(0.5 0.2 295 / 0.45),
+      transparent 55%
+    ),
+    linear-gradient(180deg, oklch(0.14 0.04 245), oklch(0.12 0.035 250));
+
+  --gradient-glow: linear-gradient(
+    135deg,
+    var(--color-cyan-glow),
+    var(--color-turquoise) 50%,
+    var(--color-bio-purple)
+  );
+
+  --gradient-pulse: radial-gradient(
+    circle at center,
+    oklch(0.82 0.18 200 / 0.35),
+    transparent 70%
+  );
+
+  --shadow-glow: 0 0 0 1px oklch(0.82 0.18 200 / 0.12),
+    0 8px 40px -8px oklch(0.78 0.16 200 / 0.45),
+    0 0 80px -20px oklch(0.62 0.22 295 / 0.55);
+
+  --shadow-neon: 0 0 18px oklch(0.82 0.18 200 / 0.55),
+    0 0 48px oklch(0.82 0.18 200 / 0.35);
+
+  --shadow-card: 0 24px 60px -24px oklch(0.08 0.03 250 / 0.9),
+    inset 0 1px 0 0 oklch(0.82 0.18 200 / 0.14);
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  ::selection {
+    background: oklch(0.82 0.18 200 / 0.3);
+    color: var(--color-foreground);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(0.12 0.03 250);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.4 0.1 250);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+  }
+}
+
+/* =========================================================================
+   Keyframes
+   ========================================================================= */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 18px oklch(0.82 0.18 200 / 0.45));
+  }
+  20% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 38px oklch(0.82 0.18 200 / 0.75));
+  }
+  40% {
+    transform: scale(0.98);
+  }
+  60% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 30px oklch(0.72 0.25 350 / 0.6));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 18px oklch(0.82 0.18 200 / 0.45));
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(12px, -22px);
+  }
+  66% {
+    transform: translate(-10px, 14px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.82 0.18 200 / 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 14px oklch(0.82 0.18 200 / 0);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+
+@keyframes flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================================
+   Utility classes
+   ========================================================================= */
+@layer utilities {
+  .glass {
+    background: linear-gradient(
+      135deg,
+      oklch(0.82 0.18 200 / 0.06),
+      oklch(0.62 0.22 295 / 0.05)
+    );
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid oklch(0.82 0.18 200 / 0.18);
+  }
+
+  .glass-strong {
+    background: linear-gradient(
+      135deg,
+      oklch(0.82 0.18 200 / 0.1),
+      oklch(0.62 0.22 295 / 0.08)
+    );
+    backdrop-filter: blur(34px) saturate(160%);
+    -webkit-backdrop-filter: blur(34px) saturate(160%);
+    border: 1px solid oklch(0.82 0.18 200 / 0.22);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .gradient-text {
+    background: var(--gradient-glow);
+    background-size: 200% 200%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: var(--animate-flow);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 18px oklch(0.82 0.18 200 / 0.55),
+      0 0 40px oklch(0.62 0.22 295 / 0.4);
+  }
+
+  .neon-border {
+    position: relative;
+    isolation: isolate;
+  }
+  .neon-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-glow);
+    background-size: 200% 200%;
+    animation: var(--animate-flow);
+    -webkit-mask: linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 28%;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      oklch(0.82 0.18 200 / 0.14),
+      transparent
+    );
+    animation: var(--animate-scan);
+    pointer-events: none;
+  }
+
+  .bg-gradient-glow {
+    background: var(--gradient-glow);
+    background-size: 200% 200%;
+    animation: var(--animate-flow);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .shadow-neon {
+    box-shadow: var(--shadow-neon);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .grid-mesh {
+    background-image: linear-gradient(
+        oklch(0.82 0.18 200 / 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, oklch(0.82 0.18 200 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+}

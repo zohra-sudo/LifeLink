@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7af0ff"/>
+      <stop offset="1" stop-color="#a66bff"/>
+    </linearGradient>
+    <filter id="b"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="800" height="500" fill="#0a1124"/>
+  <g fill="url(#h)" fill-opacity="0.12" stroke="url(#h)" stroke-width="2">
+    <!-- heart -->
+    <path d="M150 230 C115 200 95 178 95 150 C95 128 113 115 133 115 C146 115 156 124 160 137 C164 124 174 115 187 115 C207 115 225 128 225 150 C225 178 205 200 150 230 Z" transform="translate(-20 0)"/>
+    <!-- lungs -->
+    <path d="M360 130 C330 140 320 200 330 260 C338 300 380 300 384 250 L384 140 C384 128 372 126 360 130 Z"/>
+    <path d="M430 130 C460 140 470 200 460 260 C452 300 410 300 406 250 L406 140 C406 128 418 126 430 130 Z"/>
+    <!-- kidney -->
+    <path d="M600 150 C570 150 560 185 575 215 C588 240 620 235 622 205 C624 185 618 150 600 150 Z"/>
+    <!-- liver -->
+    <path d="M520 330 C560 315 660 315 690 340 C710 358 690 390 640 392 C580 394 520 380 510 355 C505 343 510 334 520 330 Z"/>
+    <!-- kidney 2 -->
+    <path d="M210 350 C180 350 170 385 185 415 C198 440 230 435 232 405 C234 385 228 350 210 350 Z"/>
+  </g>
+  <g stroke="#5ce1ff" stroke-width="0.6" opacity="0.18" filter="url(#b)">
+    <path d="M0 100 H800 M0 250 H800 M0 400 H800"/>
+  </g>
+</svg>
