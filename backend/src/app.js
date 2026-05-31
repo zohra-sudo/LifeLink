@@ -17,28 +17,11 @@ import statsRoutes from "./routes/statsRoutes.js";
 export function createApp() {
   const app = express();
 
-  const allowedOrigins = [
-    process.env.CLIENT_ORIGIN,
-    "http://localhost:5173",
-    "https://life-link-six-psi.vercel.app",
-  ].filter(Boolean);
-
   app.set("trust proxy", 1);
 
   // ----- Security & parsing -----
   app.use(helmet());
-  app.use(
-    cors({
-      origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
-      credentials: true,
-    })
-  );
+  app.use(cors({ origin: "*" }));
   app.use(express.json({ limit: "100kb" }));
   app.use(mongoSanitize());
   if (process.env.NODE_ENV !== "test") app.use(morgan("dev"));
