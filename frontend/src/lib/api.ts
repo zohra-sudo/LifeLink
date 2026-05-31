@@ -1,9 +1,5 @@
-/**
- * Client API typé pour le backend LifeLink (Express + MongoDB).
- * En dev, /api est proxifié vers http://localhost:4000 (vite.config.ts).
- * Le JWT est lu depuis localStorage et envoyé en Bearer.
- */
-const BASE = "/api";
+
+const BASE = `${import.meta.env.VITE_API_URL}/api`;
 const TOKEN_KEY = "lifelink_token";
 
 export function getToken(): string | null {
