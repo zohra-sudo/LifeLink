@@ -14,21 +14,33 @@ import hopitalRoutes from "./routes/hopitalRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js";
 
-/**
- * Builds the Express app (no DB connection / no listen here) so it can be
- * imported directly by tests with supertest.
- */
 export function createApp() {
   const app = express();
-  const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "http://localhost:5173";
+
+  const allowedOrigins = [
+    process.env.CLIENT_ORIGIN,
+    "http://localhost:5173",
+    "https://life-link-six-psi.vercel.app",
+  ].filter(Boolean);
 
   app.set("trust proxy", 1);
 
   // ----- Security & parsing -----
   app.use(helmet());
-  app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }));
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
+      },
+      credentials: true,
+    })
+  );
   app.use(express.json({ limit: "100kb" }));
-  app.use(mongoSanitize()); // strips $ / . keys → blocks NoSQL injection
+  app.use(mongoSanitize());
   if (process.env.NODE_ENV !== "test") app.use(morgan("dev"));
 
   // ----- Health -----
